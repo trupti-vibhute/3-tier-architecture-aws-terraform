@@ -12,14 +12,15 @@ terraform {
     }
   }
 
-  # Uncomment to use S3 backend for remote state
-  # backend "s3" {
-  #   bucket         = "your-terraform-state-bucket"
-  #   key            = "goal-tracker/dev/terraform.tfstate"
-  #   region         = "us-east-1"
-  #   encrypt        = true
-  #   dynamodb_table = "terraform-state-lock"
-  # }
+  # Remote state in S3 (bucket created by ../../bootstrap)
+  # Locking uses an S3 lock file, so no DynamoDB table is needed
+  backend "s3" {
+    bucket       = "goal-tracker-tfstate-511582926541"
+    key          = "goal-tracker/dev/terraform.tfstate"
+    region       = "ap-south-1"
+    encrypt      = true
+    use_lockfile = true
+  }
 }
 
 provider "aws" {
